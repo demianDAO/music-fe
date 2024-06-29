@@ -1,5 +1,5 @@
 import rpodcast from '@/public/episodes/resource-podcast.jpg';
-import Grid from '@mui/material/esm/Unstable_Grid2';
+import Grid from '@mui/material/Grid';
 import Background from './background/Index';
 import Cast from './cast/Index';
 import Example from './example/Index';

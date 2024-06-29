@@ -8,12 +8,10 @@ import img6 from '@/public/episodes/img6.png';
 import img7 from '@/public/episodes/img7.png';
 import img8 from '@/public/episodes/img8.png';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { Avatar, Divider, Tooltip } from '@mui/material';
-import Button from '@mui/material/Button';
 import { Stack } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 
@@ -24,6 +22,8 @@ import { useParams } from 'react-router-dom';
 import { Player } from 'shikwasa';
 import 'shikwasa/dist/style.css';
 import Style from './index.module.css';
+import Pay from './pay';
+
 export default function Cast() {
   const { principal, index } = useParams();
 
@@ -94,6 +94,7 @@ export default function Cast() {
       getRecordPlay();
     }
   }, [principal]);
+
   return (
     <Stack
       direction={'row'}
@@ -242,22 +243,21 @@ export default function Cast() {
               Guests :
               {podcastData[0]?.[1]?.guests
                 ? podcastData[0]?.[1]?.guests?.map(item => {
-                    return item.toText();
-                  })
+                  return item.toText();
+                })
                 : 'not yet'}
             </Stack>
           </Stack>
-          <Stack direction={'row'} sx={{ color: '#fff' }}>
+
+          <Stack direction={'row'} spacing={4} color={'#fff'}>
             <Tooltip title="View">
-              <RemoveRedEyeIcon sx={{ marginRight: '10px' }}></RemoveRedEyeIcon>
+              <RemoveRedEyeIcon sx={{ marginRight: '20px' }}></RemoveRedEyeIcon>
             </Tooltip>
             {count}
           </Stack>
-          <Stack direction={'row'} sx={{ color: '#fff', marginTop: '15px' }}>
-            <Button variant="contained" href={podcastData[0]?.[1]?.show_note}>
-              <FileDownloadIcon /> <span>Download Mp3 </span>
-            </Button>
-          </Stack>
+
+          <Pay amount={0} tokenId={1n} singer='0xc0ee714715108b1a6795391f7e05a044d795ba70'></Pay>
+
         </Stack>
       </Stack>
 
@@ -265,6 +265,6 @@ export default function Cast() {
         position={'fixed'}
         className="shikawa-podcast"
         sx={{ bottom: '0px', marginTop: '20px', width: '100%' }}></Stack>
-    </Stack>
+    </Stack >
   );
 }

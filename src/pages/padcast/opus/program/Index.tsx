@@ -3,7 +3,7 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { Avatar, Button, Card, Chip, Typography } from '@mui/material';
-import Grid from '@mui/material/esm/Unstable_Grid2';
+import Grid from '@mui/material/Grid';
 import Tab from '@mui/material/Tab';
 import { Box, Stack } from '@mui/system';
 import { PodcastIterm } from '@nnsdao/nnsdao-kit/src/podcast/types';

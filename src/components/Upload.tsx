@@ -9,7 +9,7 @@ import {
 } from '@aws-sdk/client-s3';
 import toast from 'react-hot-toast';
 
-import { Avatar, CircularProgress, Typography } from '@mui/material/esm';
+import { Avatar, CircularProgress, Typography } from '@mui/material/';
 import IconButton from '@mui/material/IconButton';
 import { Box } from '@mui/system';
 import React from 'react';

@@ -1,4 +1,5 @@
-import { TreeItem, treeItemClasses, TreeItemProps } from '@mui/lab';
+import { TreeItem, treeItemClasses, TreeItemProps } from '@mui/x-tree-view';
+import '@mui/lab';
 import { Box, styled, SvgIconProps, Typography } from '@mui/material';
 import React from 'react';
 type StyledTreeItemProps = TreeItemProps & {
@@ -41,7 +42,7 @@ const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
       color: 'inherit',
     },
   },
-  [`& .${treeItemClasses.group}`]: {
+  [`& .${treeItemClasses.groupTransition}`]: {
     [`& .${treeItemClasses.content}`]: {
       paddingLeft: 0,
     },

@@ -7,7 +7,7 @@ import Style from './index.module.css';
 export default function EpisodeCard(props) {
   const navigator = useNavigate();
   const toPodcastDetail = index => {
-    navigator(`/podcastDetail/${props?.data['cid']}${index} `);
+    navigator(`/PodcastDetail/${props?.data['cid']}/${index} `);
   };
 
   return (

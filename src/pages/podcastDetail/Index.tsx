@@ -1,7 +1,7 @@
-import Grid from '@mui/material/esm/Unstable_Grid2';
+import Grid from '@mui/material/Grid';
 import Cast from './cast/Index';
 
-export default function About() {
+export default function PodcastDetail() {
   return (
     <Grid>
       <Cast></Cast>

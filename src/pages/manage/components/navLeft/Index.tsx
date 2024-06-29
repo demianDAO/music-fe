@@ -1,4 +1,5 @@
-import { TreeView } from '@mui/lab';
+import { TreeView } from '@mui/x-tree-view';
+import '@mui/lab';
 import { Paper } from '@mui/material';
 import React, { useEffect } from 'react';
 import toast from 'react-hot-toast';

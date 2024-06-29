@@ -1,7 +1,7 @@
 import { useGet_social_link, useSet_social_link } from '@/api/podcast';
 import { Button, Stack, TextField } from '@mui/material';
-import { Card } from '@mui/material/esm';
-import Grid from '@mui/material/esm/Unstable_Grid2';
+import { Card } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import { SocialLink } from '@nnsdao/nnsdao-kit/src/podcast/types';
 import React from 'react';
 import toast from 'react-hot-toast';

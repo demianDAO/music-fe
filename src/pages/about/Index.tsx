@@ -1,4 +1,4 @@
-import Grid from '@mui/material/esm/Unstable_Grid2';
+import Grid from '@mui/material/Grid';
 import Cast from './cast/Index';
 import History from './history/Index';
 import Info from './info/Index';

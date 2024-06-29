@@ -1,6 +1,6 @@
 import { useGet_canister_status } from '@/api/podcast';
 import { Principal } from '@dfinity/principal';
-import Grid from '@mui/material/esm/Unstable_Grid2';
+import Grid from '@mui/material/Grid';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import LoadingWrapper from '../../../../components/LoadingWrapper';
