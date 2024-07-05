@@ -1,16 +1,11 @@
-// import NdpService from '@/common/service/ndp';
 import { client } from '@/common/client';
 import { useUserStore } from '@/hooks/userStore';
-import { ConnectButton, ThirdwebProvider } from "thirdweb/react";
+import { Stack } from '@mui/material';
+import { ConnectButton } from 'thirdweb/react';
 import { Wallet } from 'thirdweb/wallets';
 
-type Prop = {
-  isShow: boolean;
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  closeDialog: Function;
-};
 
-export default function LoginWrapper(props: Prop) {
+export default function LoginWrapper() {
   const [userInfo, dispatch] = useUserStore();
 
   function successLogin(wallet: Wallet) {
@@ -23,8 +18,8 @@ export default function LoginWrapper(props: Prop) {
   }
 
   return (
-    <ThirdwebProvider>
+    <Stack>
       <ConnectButton client={client} onConnect={successLogin} />
-    </ThirdwebProvider>
+    </Stack>
   );
 }

@@ -1,9 +1,11 @@
 import { chain } from '@/common/chain';
 import { client } from '@/common/client';
 import { purchaseSong } from '@/thirdweb/97/0x5d46f80305e8a69cd74c59533530cec9b23390e8';
+import { Alert } from '@mui/material';
 import { Stack } from '@mui/system';
+import { useState } from 'react';
 import { getContract, sendAndConfirmTransaction } from 'thirdweb';
-import { approve } from "thirdweb/extensions/erc20";
+import { approve } from 'thirdweb/extensions/erc20';
 import { TransactionButton, useActiveAccount } from "thirdweb/react";
 
 const REWARD_TOKEN_CONTRACT = getContract({
@@ -27,38 +29,51 @@ type Prop = {
 export default function Pay(prop: Prop) {
     const activeAccount = useActiveAccount();
 
+    const [alert, setAlert] = useState("")
+
     return (
-        <Stack direction={'row'} sx={{ color: '#fff', marginTop: '15px' }}>
-            {/* <Button variant="contained" href={podcastData[0]?.[1]?.show_note}> */}
+        <Stack sx={{ color: '#fff', marginTop: '15px' }} spacing={{ xs: 1, sm: 2, md: 4 }}>
+
+            {alert && <Alert severity="error">{alert}</Alert>}
+
             <TransactionButton
-                transaction={() => (
-                    approve({
+                transaction={() => {
+                    return approve({
                         contract: REWARD_TOKEN_CONTRACT,
                         spender: SPENDER_TOKEN_CONTRACT.address,
                         amount: prop.amount,
                     })
-                    // purchaseSong({
-                    //   contract: SPENDER_TOKEN_CONTRACT,
-                    //   tokenId: 1n,
-                    //   singer: "0xc0ee714715108b1a6795391f7e05a044d795ba70",
+
+                    // const r = purchaseSong({
+                    //     contract: SPENDER_TOKEN_CONTRACT,
+                    //     tokenId: prop.tokenId,
+                    //     singer: getAddress(prop.singer),
                     // })
-                )}
+                }}
 
                 onTransactionConfirmed={async (_) => {
-                    const transaction = purchaseSong({
-                        contract: SPENDER_TOKEN_CONTRACT,
-                        tokenId: prop.tokenId,
-                        singer: prop.singer,
-                    })
+                    try {
+                        const transaction = purchaseSong({
+                            contract: SPENDER_TOKEN_CONTRACT,
+                            tokenId: prop.tokenId,
+                            singer: prop.singer,
+                        })
 
-                    await sendAndConfirmTransaction({
-                        transaction,
-                        account: activeAccount!,
-                    });
+                        await sendAndConfirmTransaction({
+                            transaction,
+                            account: activeAccount!,
+                        });
+                    } catch (error) {
+                        if (error instanceof Error) {
+                            setAlert(error.message);
+                        } else {
+                            setAlert(error as string);
+                        }
+                    }
                 }}
 
                 onError={(error) => {
-                    console.log("Error: ", error);
+                    setAlert(error.message);
                 }}
 
             >Collect Now With {prop.amount} ETH</TransactionButton>

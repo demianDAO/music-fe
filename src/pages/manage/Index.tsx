@@ -4,11 +4,11 @@ import NavLeft from './components/navLeft/Index';
 
 export default function Manage() {
   return (
-    <Grid container marginX={{ lg: '150px', md: '50px' }} my={{ xl: 6, sm: 2 }} spacing={{ md: 6, sm: 2, xs: 1 }}>
-      <Grid md={1} sm={1.8} justifySelf="flex-start" sx={{ position: 'relative' }} minWidth={200}>
+    <Grid  md={12} sm={12} container my={{ xl: 6, sm: 2 }} spacing={{ md: 6, sm: 2, xs: 1 }}>
+      <Grid item md={1} sm={1} marginLeft={'150px'} minWidth={'300px'}>
         <NavLeft />
       </Grid>
-      <Grid md={11} sm={9} flexShrink={1} ml={{ sm: 1, md: 8 }} sx={{ minHeight: '900px' }} alignItems="stretch">
+      <Grid item md={8} sm={8} xs={8}>
         <Outlet></Outlet>
       </Grid>
     </Grid>

@@ -1,4 +1,5 @@
-import { TreeView } from '@mui/x-tree-view';
+import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
+
 import '@mui/lab';
 import { Paper } from '@mui/material';
 import React, { useEffect } from 'react';
@@ -15,9 +16,11 @@ export default function NavLeft() {
     let nodeID = config.find(item => new RegExp(item.labelText, 'i').test(pathname))?.nodeId || '1';
     setSelected(nodeID);
   }, [pathname]);
+
   const [selected, setSelected] = React.useState(() => {
     return config.find(item => new RegExp(item.labelText, 'i').test(pathname))?.nodeId || '1';
   });
+
   const toChildren = item => {
     if (/issue/i.test(item.labelText)) {
       return toast('Under Development!', {
@@ -28,16 +31,15 @@ export default function NavLeft() {
   };
   return (
     <Paper sx={{ background: '#fff', position: 'sticky', top: '10px', padding: '8px' }}>
-      <TreeView
-        selected={selected}
-        onNodeSelect={(e, id) => setSelected(id)}
-        defaultCollapseIcon={false}
+      <SimpleTreeView
+        selectedItems={selected}
+        onSelectedItemsChange={(e, id) => setSelected(id!)}
         sx={{ flexGrow: 1, width: '100%', overflowY: 'auto' }}>
         {config.map((item, index) => (
           <StyledTreeItem
             key={item.labelText}
             labelType={item.labelType}
-            nodeId={item.nodeId}
+            itemId={item.nodeId}
             labelText={item.labelText}
             labelIcon={item.labelIcon}
             labelInfo={item.labelInfo}
@@ -46,7 +48,7 @@ export default function NavLeft() {
             onClick={() => toChildren(item)}
           />
         ))}
-      </TreeView>
+      </SimpleTreeView>
     </Paper>
   );
 }

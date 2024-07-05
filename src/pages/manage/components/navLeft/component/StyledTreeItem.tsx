@@ -1,6 +1,6 @@
-import { TreeItem, treeItemClasses, TreeItemProps } from '@mui/x-tree-view';
 import '@mui/lab';
 import { Box, styled, SvgIconProps, Typography } from '@mui/material';
+import { TreeItem, treeItemClasses, TreeItemProps } from '@mui/x-tree-view';
 import React from 'react';
 type StyledTreeItemProps = TreeItemProps & {
   labelType: string;
@@ -9,7 +9,7 @@ type StyledTreeItemProps = TreeItemProps & {
   labelIcon?: React.ElementType<SvgIconProps>;
   labelInfo?: string;
   labelText?: string;
-  nodeId: String;
+  itemId: String;
 };
 declare module 'react' {
   interface CSSProperties {
@@ -42,7 +42,7 @@ const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
       color: 'inherit',
     },
   },
-  [`& .${treeItemClasses.group}`]: {
+  [`& .${treeItemClasses.groupTransition}`]: {
     [`& .${treeItemClasses.content}`]: {
       paddingLeft: 0,
     },

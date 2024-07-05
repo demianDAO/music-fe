@@ -1,6 +1,5 @@
 import { get_address, useCreate_podcast_canister, usePodcast_canister } from '@/api/manage';
 import LoadingWrapper from '@/components/LoadingWrapper';
-import LoginWrapper from '@/components/Login/Login';
 import { useUserStore } from '@/hooks/userStore';
 import { Principal } from '@dfinity/principal';
 import {
@@ -81,7 +80,7 @@ export default function Home() {
         </Button>
       </Stack>
       <Divider variant="middle" sx={{ marginY: '30px' }} />
-      <List></List>
+      {/* <List></List> */}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -100,7 +99,7 @@ export default function Home() {
           </Button>
         </DialogActions>
       </Dialog>
-      <LoginWrapper isShow={isShowDialog} closeDialog={() => setIsShowDialog(false)} />
+      {/* <LoginWrapper/> */}
     </Stack>
   );
 }

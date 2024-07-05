@@ -1,43 +1,28 @@
 import { useUserStore } from '@/hooks/userStore';
 import logo from '@/public/topBar/looncast.png';
 import underline from '@/public/topBar/underline.png';
-import { useConnect } from '@connect2ic/react';
-import { ButtonBase, Stack } from '@mui/material';
-import { useState } from 'react';
+import { Button, ButtonBase, Stack } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
-
 import LoginWrapper from './Login/Login';
 
 export default function TopBar() {
   const nav = ['Episodes', 'Discover', 'Features', 'About'];
   let { pathname } = useLocation();
-  const navigate = useNavigate();
-  const [isShowDialog, setIsShowDialog] = useState(false);
+  const navigate = useNavigate()
+
   const [userStore, dispatch] = useUserStore();
   const isLogin = userStore.isLogin;
+
   const formatPathName = () => {
     if (pathname === '/' || pathname === '') {
       pathname = '/Episodes';
     }
     return pathname.substr(1);
   };
+
   const toNagation = router => {
     navigate(`${router}`);
   };
-  const changeDialogShow = (bool: boolean | ((prevState: boolean) => boolean)) => {
-    setIsShowDialog(bool);
-  };
-
-  const { isConnected, principal, activeProvider } = useConnect({
-    onConnect: () => {
-      console.log('sign in', isConnected, activeProvider, principal);
-    },
-    onDisconnect: () => {
-      console.log('sign out', isConnected, activeProvider, principal);
-    },
-  });
-
-  const [stakeAmount, setStakeAmount] = useState(0);
 
   return (
     <Stack width={'80%'} direction={'row'} justifyContent="space-between" alignItems={'center'}>
@@ -78,7 +63,7 @@ export default function TopBar() {
           ))}
         </Stack>
       </Stack>
-      {/* {isLogin ? (<Stack
+      {isLogin ? (<Stack
         onClick={() => toNagation('manage')}
         sx={{
           position: 'relative',
@@ -110,29 +95,11 @@ export default function TopBar() {
         </Button>
       </Stack>
       ) : (<></>
-      )} */}
+      )}
 
-      {/* <ConnectButton />
-      <ConnectDialog /> */}
       <Stack>
-        <LoginWrapper isShow={isShowDialog} closeDialog={() => setIsShowDialog(false)} />
+        <LoginWrapper />
       </Stack>
-      {/* <Stack>
-        <TransactionButton
-          transaction={() => (
-            approve({
-              contract: STAKE_TOKEN_CONTRACT,
-              spender: STAKING_CONTRACT.address,
-              amount: stakeAmount,
-            })
-          )}
-          onTransactionConfirmed={() => setStakingState("approved")}
-          style={{
-            width: "100%",
-            margin: "10px 0",
-          }}
-        >Set Approval</TransactionButton>
-      </Stack> */}
     </Stack>
   );
 }

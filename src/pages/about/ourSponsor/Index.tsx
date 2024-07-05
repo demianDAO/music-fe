@@ -20,7 +20,7 @@ export default function OurSponsor() {
         }}>
         <img src={bg15} alt="" width={'195px'} height={'186px'} />
       </Stack>
-      <img src={listeners} alt="" width={'1920px'} height={'1086px'} />
+      <img src={listeners} alt="" width={'100%'} height={'1086px'} />
       <Stack
         justifyContent={'start'}
         sx={{

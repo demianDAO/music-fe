@@ -1,4 +1,3 @@
-import { useGet_podcast_list } from '@/api/podcast';
 import img1 from '@/public/episodes/img1.png';
 import img2 from '@/public/episodes/img2.png';
 import img3 from '@/public/episodes/img3.png';
@@ -7,42 +6,58 @@ import img5 from '@/public/episodes/img5.png';
 import img6 from '@/public/episodes/img6.png';
 import img7 from '@/public/episodes/img7.png';
 import img8 from '@/public/episodes/img8.png';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import { Avatar, Divider, Tooltip } from '@mui/material';
+import { Avatar, Button, Divider } from '@mui/material';
 import { Stack } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 
-import { PodcastIterm } from '@nnsdao/nnsdao-kit/src/podcast/types';
-import dayjs from 'dayjs';
+import { getOwnedSong } from '@/api/song';
+import { PodcastItem, getDiscoverList } from '@/api/song/discover';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Player } from 'shikwasa';
 import 'shikwasa/dist/style.css';
+import { useActiveAccount } from 'thirdweb/react';
 import Style from './index.module.css';
 import Pay from './pay';
 
+
 export default function Cast() {
-  const { principal, index } = useParams();
+  const { principal, tokenId } = useParams();
 
-  const [count, setCount] = useState(0);
+  const [podcastData, setPodcastData] = useState<PodcastItem>({
+    title: '',
+    artist_addr: '',
+    overview: '',
+    token_id: 0,
+    token_uri: '',
+    price: 0,
+    tx_id: '',
+  });
+
+  const activeAccount = useActiveAccount();
+
+  const getPodcastData = async () => {
+    if (activeAccount === undefined) return;
+    const data = await getDiscoverList()
+    const podcastData = data?.filter(item => Number(tokenId) == Number(item.token_id))[0]!
+    setPodcastData(podcastData)
+  }
+
+  const [has, setHas] = useState(false);
+  const hasPodcast = async () => {
+    if (activeAccount === undefined) return;
+    const owned = await getOwnedSong(activeAccount?.address!)
+    setHas(owned.find(item => Number(tokenId) === Number(item.token_id)) !== undefined)
+  }
+
+  useEffect(() => {
+    getPodcastData()
+    hasPodcast()
+  }, [activeAccount === undefined]);
+
   const [playStatus, setPlayer] = useState(false);
-
-  const podcastData: Array<[bigint, PodcastIterm]> =
-    useGet_podcast_list(principal as string)?.data?.filter(item => Number(index) == Number(item[0])) || [];
-  console.log(podcastData, 'podcastData');
-
-  const getRecordPlay = async () => {
-    const res = await fetch(`https://dapi.nnsdao.com/api/podcast/info?canister=${principal}&id=${index}`)
-      .then(res => res.json())
-      .catch();
-    if (res.success) {
-      const { count } = res.data;
-      setCount(count);
-    }
-  };
 
   // to creator toPodcastCreator
   const navigator = useNavigate();
@@ -50,25 +65,11 @@ export default function Cast() {
     navigator(`/podcastCreator/${principal}`);
   };
 
-  const postRecordPlay = async () => {
-    const res = await fetch('https://dapi.nnsdao.com/api/podcast/record_play', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        canister: principal,
-        id: index,
-      }),
-    });
-    console.log('postRecordPlay', res);
-  };
-
-  const showPlayer = data => {
+  const showPlayer = async (data: PodcastItem) => {
     if (!playStatus) {
       setPlayer(true);
     }
+
     const player = new Player({
       container: () => document.querySelector('.shikawa-podcast'),
       themeColor: 'gray',
@@ -77,23 +78,22 @@ export default function Cast() {
         type: 'static',
       },
       audio: {
-        title: data[0]?.[1]?.title,
-        artist: data[0]?.[1]?.hosts[0]?.toText(),
-        cover: data[0]?.[1]?.cover_image,
-        src: data[0]?.[1]?.show_note,
+        title: data.title,
+        artist: data.artist_addr,
+        cover: data.token_uri,
+        src: `https://music-platform.zeabur.app/v1/song/${data.tx_id}`,
       },
-      download: true,
     });
 
     player.play();
-  };
 
-  useEffect(() => {
-    if (principal && index) {
-      postRecordPlay();
-      getRecordPlay();
+    if (!has) {
+      setTimeout(() => {
+        player.destroy();
+        setPlayer(false);
+      }, 5000);
     }
-  }, [principal]);
+  };
 
   return (
     <Stack
@@ -120,8 +120,8 @@ export default function Cast() {
           <Avatar
             alt="host page"
             sx={{ cursor: 'pointer', width: '445px', height: '488px' }}
-            onClick={() => toPodcastCreator(principal)}
-            src={podcastData[0]?.[1]?.cover_image}
+            // onClick={() => toPodcastCreator(principal)}
+            src={podcastData?.token_uri}
           />
         </Stack>
         <Stack direction={'column'} width={'549px'}>
@@ -133,11 +133,11 @@ export default function Cast() {
               color: '#FFFFFF',
               lineHeight: '65px',
             }}>
-            {podcastData[0]?.[1]?.title}
+            {podcastData?.title}
           </Stack>
-          <Stack direction={'row'} sx={{ color: '#fff' }}>
+          {/* <Stack direction={'row'} sx={{ color: '#fff' }}>
             <CalendarMonthIcon /> {dayjs.unix(Number(podcastData[0]?.[1]?.create_at) / 1000).format('MMM-DD-YYYY')}
-          </Stack>
+          </Stack> */}
 
           <Stack sx={{ marginY: '30px' }}>
             <Stack
@@ -171,11 +171,11 @@ export default function Cast() {
                     bgcolor: '#10062F',
                   },
                 }}>
-                <Avatar
+                {/* <Avatar
                   sx={{ cursor: 'pointer' }}
                   onClick={() => toPodcastCreator(principal)}
                   src={podcastData[0]?.[1]?.cover_image}
-                />
+                /> */}
 
                 <Stack>
                   <Stack
@@ -188,7 +188,7 @@ export default function Cast() {
                       width: '200px',
                       overflow: 'hidden',
                     }}>
-                    {podcastData[0]?.[1]?.sub_title}
+                    {/* {podcastData[0]?.[1]?.sub_title} */}
                   </Stack>
                   <Stack
                     sx={{
@@ -200,15 +200,21 @@ export default function Cast() {
                       lineHeight: '21px',
                       overflow: 'hidden',
                     }}>
-                    Hosted by: {podcastData[0]?.[1]?.hosts[0]?.toText()}
+                    Hosted by: {podcastData?.artist_addr}
                   </Stack>
                 </Stack>
                 {/* <audio controls color="black">
                   <source src={podcastData[0]?.[1]?.show_note} type="audio/ogg" />
                 </audio> */}
 
-                <Stack onClick={() => showPlayer(podcastData)} sx={{ marginTop: '15px' }}>
+                <Stack onClick={() => showPlayer(podcastData)} sx={{
+                  marginTop: '15px',
+                  fontSize: '16px',
+                  color: '#B5B5C3',
+                  lineHeight: '21px',
+                }}>
                   {playStatus ? <PauseIcon fontSize="large" /> : <PlayArrowIcon fontSize="large" />}
+                  {!has ? "try 5 second" : ""}
                 </Stack>
               </Stack>
             </Stack>
@@ -226,10 +232,10 @@ export default function Cast() {
               minHeight: '180px',
               overflow: 'hidden',
             }}>
-            {podcastData[0]?.[1]?.describe}
+            {podcastData?.overview}
           </Stack>
 
-          <Stack direction={'row'} sx={{ color: '#fff', paddingBottom: '30px' }}>
+          {/* <Stack direction={'row'} sx={{ color: '#fff', paddingBottom: '30px' }}>
             <Stack
               sx={{
                 width: '200px',
@@ -247,16 +253,23 @@ export default function Cast() {
                 })
                 : 'not yet'}
             </Stack>
-          </Stack>
+          </Stack> */}
+          {
+            has ? (
+              <Button sx={{
+                fontSize: '16px',
+                color: '#B5B5C3',
+                lineHeight: '21px',
+              }} variant="contained" size="large">
+                Collected
+              </Button>
+            )
+              :
+              (<Pay amount={podcastData?.price}
+                tokenId={BigInt(podcastData?.token_id! as number)}
+                singer={podcastData?.artist_addr!}></Pay>)
+          }
 
-          <Stack direction={'row'} spacing={4} color={'#fff'}>
-            <Tooltip title="View">
-              <RemoveRedEyeIcon sx={{ marginRight: '20px' }}></RemoveRedEyeIcon>
-            </Tooltip>
-            {count}
-          </Stack>
-
-          <Pay amount={0} tokenId={1n} singer='0xc0ee714715108b1a6795391f7e05a044d795ba70'></Pay>
 
         </Stack>
       </Stack>
@@ -264,7 +277,7 @@ export default function Cast() {
       <Stack
         position={'fixed'}
         className="shikawa-podcast"
-        sx={{ bottom: '0px', marginTop: '20px', width: '100%' }}></Stack>
+        sx={{ bottom: '0px', marginTop: '20px', width: '100%', zIndex: 99 }}></Stack>
     </Stack >
   );
 }

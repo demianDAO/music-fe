@@ -40,7 +40,7 @@ const routes: RouteObject[] = [
     element: <Blog />,
   },
   {
-    path: 'PodcastDetail/:principal/:index',
+    path: 'PodcastDetail/:tokenId',
     element: <PodcastDetail />,
   },
   {
@@ -56,14 +56,14 @@ const routes: RouteObject[] = [
     path: 'manage',
     element: <Manage />,
     children: [
-      { index: true, element: <Home /> },
+      { index: true, element: <Token /> },
+      { path: 'Tokens', element: <Token /> },
       { path: 'Home', element: <Home /> },
       // { path: 'Profile', element: <Profile /> },
       { path: 'My Sites', element: <Site /> },
       { path: 'Billing', element: <Billing /> },
       { path: 'Invoices', element: <Invoices /> },
       // { path: 'Password', element: <Password /> },
-      { path: 'Tokens', element: <Token /> },
     ],
   },
   {

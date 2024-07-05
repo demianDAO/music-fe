@@ -5,12 +5,21 @@ import TokenIcon from '@mui/icons-material/Token';
 export const config = [
   {
     labelType: 'text',
+    labelText: 'Collections',
+    labelIcon: TokenIcon,
+    labelInfo: '',
+    color: '#1a73e8',
+    bgColor: '#F3F6F9',
+    nodeId: '1',
+  },
+  {
+    labelType: 'text',
     labelText: 'Home',
     labelIcon: HomeIcon,
     labelInfo: '',
     color: '#3c8039',
     bgColor: '#e6f4ea',
-    nodeId: '1',
+    nodeId: '15',
   },
 
   // {
@@ -50,13 +59,4 @@ export const config = [
   //   bgColor: '#F3F6F9',
   //   nodeId: '14',
   // },
-  {
-    labelType: 'text',
-    labelText: 'Tokens',
-    labelIcon: TokenIcon,
-    labelInfo: '',
-    color: '#1a73e8',
-    bgColor: '#F3F6F9',
-    nodeId: '15',
-  },
 ];
