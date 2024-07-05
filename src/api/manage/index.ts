@@ -1,7 +1,6 @@
 import { Principal } from '@dfinity/principal';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getPodcastManagerActor } from '../../service';
-import { podcastManage } from './queries';
 // create_podcast_canister: () => Promise<Result>;
 // deposit: (arg_0: Principal, arg_1: bigint) => Promise<Result>;
 // get_address: () => Promise<string>;
@@ -194,32 +193,30 @@ export const useAddress = () => {
   });
 };
 export const useCanister_status = arg1 => {
-  const queryClient = useQueryClient();
-  return useQuery(
-    podcastManage.get_canister_status(arg1),
-    async ({ queryKey }) => {
-      const { module, scope, cid } = queryKey[0];
-      const actor = await getPodcastManagerActor(true);
-      const res = await actor.get_canister_status(arg1);
-      console.log(res, 'get_canister_status');
-      if ('Ok' in res) {
-        return res.Ok;
-      }
-      return Promise.reject(null);
-    },
-    {
-      onSuccess(data) {
-        queryClient.setQueryData(podcastManage.get_canister_status(arg1), data);
-      },
-    }
-  );
+  // const queryClient = useQueryClient();
+  // return useQuery(
+  //   podcastManage.get_canister_status(arg1),
+  //   async ({ queryKey }) => {
+  //     const { module, scope, cid } = queryKey[0];
+  //     const actor = await getPodcastManagerActor(true);
+  //     const res = await actor.get_canister_status(arg1);
+  //     console.log(res, 'get_canister_status');
+  //     if ('Ok' in res) {
+  //       return res.Ok;
+  //     }
+  //     return Promise.reject(null);
+  //   },
+  //   {
+  //     onSuccess(data) {
+  //       queryClient.setQueryData(podcastManage.get_canister_status(arg1), data);
+  //     },
+  //   }
+  // );
 };
 export const usePodcast_canister = () => {
-  const queryClient = useQueryClient();
-  return useQuery(
-    podcastManage.get_podcast_canister(),
-    async ({ queryKey }) => {
-      const { module, scope, cid } = queryKey[0];
+  return useQuery({
+    queryKey: ['podcastManage.get_podcast_canister()'],
+    queryFn: async ({ queryKey }) => {
       const actor = await getPodcastManagerActor(true);
       const res = await actor.get_podcast_canister();
       console.log(res, 'res');
@@ -228,12 +225,26 @@ export const usePodcast_canister = () => {
       }
       return [];
     },
-    {
-      onSuccess(data) {
-        queryClient.setQueryData(podcastManage.get_podcast_canister(), data);
-      },
-    }
-  );
+  });
+  // const queryClient = useQueryClient();
+  // return useQuery({}
+  //   podcastManage.get_podcast_canister(),
+  //   async ({ queryKey }) => {
+  //     const { module, scope, cid } = queryKey[0];
+  //     const actor = await getPodcastManagerActor(true);
+  //     const res = await actor.get_podcast_canister();
+  //     console.log(res, 'res');
+  //     if (res.length >= 0) {
+  //       return res;
+  //     }
+  //     return [];
+  //   },
+  //   {
+  //     onSuccess(data) {
+  //       queryClient.setQueryData(podcastManage.get_podcast_canister(), data);
+  //     },
+  //   }
+  // );
 };
 export const useNeed_upgrade = arg0 => {
   const queryClient = useQueryClient();

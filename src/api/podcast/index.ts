@@ -256,10 +256,10 @@ export const useDelete_owner = (cid: string) => {
 //1
 export const useGet_admin = (cid: string) => {
   const queryClient = useQueryClient();
-  return useQuery(
-    podcast.get_admin(cid),
-    async ({ queryKey }) => {
-      const { module, scope, cid } = queryKey[0];
+  return useQuery({
+    queryKey: ['get_admin', cid],
+    queryFn: async ({ queryKey }) => {
+      const cid = queryKey[0];
       const actor = await getPodcastActor(cid, true);
       const res = await actor.get_admin();
       console.log(res, 'get_admin');
@@ -268,47 +268,28 @@ export const useGet_admin = (cid: string) => {
       }
       return Promise.reject(null);
     },
-    {
-      onSuccess(data) {
-        queryClient.setQueryData(podcast.get_admin(cid), data);
-      },
-    }
-  );
+  });
 };
 export const useGet_canister_status = (cid: string, arg: Principal) => {
-  const queryClient = useQueryClient();
-  // return get_canister_status(arg);
-  return useQuery(
-    podcast.get_canister_status(cid, arg),
-    async ({ queryKey }) => {
-      const { module, scope, cid } = queryKey[0];
-      const actor = await getPodcastActor(cid, true);
-      const res = await actor.get_canister_status(arg);
+  return useQuery({
+    queryKey: ['get_canister_status', cid, arg],
+    queryFn: async ({ queryKey }) => {
+      const actor = await getPodcastActor(queryKey[0] as string, true);
+      const res = await actor.get_canister_status(queryKey[1] as Principal);
       console.log(res, 'res');
-
       if ('Ok' in res) {
-        console.log(res.Ok, 'res');
         return res.Ok;
       }
       return Promise.reject(res);
     },
-    {
-      onSuccess(data) {
-        console.log(1);
-
-        // queryClient.setQueryData(podcast.get_canister_status(arg), data);
-      },
-    }
-  );
+  });
 };
 //1
 export const useGet_owner = (cid: string) => {
-  const queryClient = useQueryClient();
-  return useQuery(
-    podcast.get_owner(cid),
-    async ({ queryKey }) => {
-      const { module, scope, cid } = queryKey[0];
-      const actor = await getPodcastActor(cid, true);
+  return useQuery({
+    queryKey: ['get_owner', cid],
+    queryFn: async ({ queryKey }) => {
+      const actor = await getPodcastActor(queryKey[0], true);
       const res = await actor.get_owner();
       console.log(res, 'get_owner');
       if (res) {
@@ -316,19 +297,14 @@ export const useGet_owner = (cid: string) => {
       }
       return Promise.reject(null);
     },
-    {
-      onSuccess(data) {
-        queryClient.setQueryData(podcast.get_owner(cid), data);
-      },
-    }
-  );
+  });
 };
 //1
 export const useGet_podcast = (cid: string, arg_0: bigint) => {
   const queryClient = useQueryClient();
-  return useQuery(
-    podcast.get_podcast(cid, arg_0),
-    async ({ queryKey }) => {
+  return useQuery({
+    queryKey: podcast.get_podcast(cid, arg_0),
+    queryFn: async ({ queryKey }) => {
       const { module, scope, cid } = queryKey[0];
       const actor = await getPodcastActor(cid, true);
       const res = await actor.get_podcast(arg_0);
@@ -338,19 +314,14 @@ export const useGet_podcast = (cid: string, arg_0: bigint) => {
       }
       return Promise.reject(null);
     },
-    {
-      onSuccess(data) {
-        queryClient.setQueryData(podcast.get_podcast(cid, arg_0), data);
-      },
-    }
-  );
+  });
 };
 //1
 export const useGet_podcast_base_info = (cid: string) => {
   const queryClient = useQueryClient();
-  return useQuery(
-    podcast.get_podcast_base_info(cid),
-    async ({ queryKey }) => {
+  return useQuery({
+    queryKey: podcast.get_podcast_base_info(cid),
+    queryFn: async ({ queryKey }) => {
       const { module, scope, cid } = queryKey[0];
       const actor = await getPodcastActor(cid, true);
       const res = await actor.get_podcast_base_info();
@@ -360,20 +331,13 @@ export const useGet_podcast_base_info = (cid: string) => {
       }
       return Promise.reject(null);
     },
-    {
-      onSuccess(data) {
-        queryClient.setQueryData(podcast.get_podcast_base_info(cid), data);
-      },
-    }
-  );
+  });
 };
 //1
 export const useGet_podcast_list = (cid: string) => {
-  const queryClient = useQueryClient();
-  return useQuery(
-    podcast.get_podcast_list(cid),
-    async ({ queryKey }) => {
-      const { module, scope, cid } = queryKey[0];
+  return useQuery({
+    queryKey: ['get_podcast_list', cid],
+    queryFn: async ({ queryKey }) => {
       const actor = await getPodcastActor(cid, true);
       const res = await actor.get_podcast_list();
       console.log(res, 'get_podcast_list');
@@ -382,18 +346,12 @@ export const useGet_podcast_list = (cid: string) => {
       }
       return Promise.reject(null);
     },
-    {
-      onSuccess(data) {
-        queryClient.setQueryData(podcast.get_podcast_list(cid), data);
-      },
-    }
-  );
+  });
 };
 export const useGet_podcast_list_creator = (cid: string) => {
-  const queryClient = useQueryClient();
-  return useQuery(
-    podcast.get_podcast_list(cid),
-    async ({ queryKey }) => {
+  return useQuery({
+    queryKey: ['get_podcast_list', cid],
+    queryFn: async ({ queryKey }) => {
       const actor = await getPodcastActor(cid, true);
       const res = await actor.get_podcast_list();
       console.log(res, 'get_podcast_list');
@@ -402,20 +360,31 @@ export const useGet_podcast_list_creator = (cid: string) => {
       }
       return Promise.reject(null);
     },
-    {
-      onSuccess(data) {
-        queryClient.setQueryData(podcast.get_podcast_list(cid), data);
-      },
-    }
-  );
+  });
+  // const queryClient = useQueryClient();
+  // return useQuery(
+  //   podcast.get_podcast_list(cid),
+  //   async ({ queryKey }) => {
+  //     const actor = await getPodcastActor(cid, true);
+  //     const res = await actor.get_podcast_list();
+  //     console.log(res, 'get_podcast_list');
+  //     if (res) {
+  //       return res;
+  //     }
+  //     return Promise.reject(null);
+  //   },
+  //   {
+  //     onSuccess(data) {
+  //       queryClient.setQueryData(podcast.get_podcast_list(cid), data);
+  //     },
+  //   }
+  // );
 };
 //1
 export const useGet_social_link = (cid: string) => {
-  const queryClient = useQueryClient();
-  return useQuery(
-    podcast.get_social_link(cid),
-    async ({ queryKey }) => {
-      const { module, scope, cid } = queryKey[0];
+  return useQuery({
+    queryKey: ['get_social_link', cid],
+    queryFn: async ({ queryKey }) => {
       const actor = await getPodcastActor(cid, true);
       const res = await actor.get_social_link();
       console.log(res, 'get_social_link');
@@ -424,12 +393,26 @@ export const useGet_social_link = (cid: string) => {
       }
       return Promise.reject(null);
     },
-    {
-      // onSuccess(data) {
-      //   queryClient.setQueryData(podcast.get_social_link(), data);
-      // },
-    }
-  );
+  });
+  // const queryClient = useQueryClient();
+  // return useQuery(
+  //   podcast.get_social_link(cid),
+  //   async ({ queryKey }) => {
+  //     const { module, scope, cid } = queryKey[0];
+  //     const actor = await getPodcastActor(cid, true);
+  //     const res = await actor.get_social_link();
+  //     console.log(res, 'get_social_link');
+  //     if (res) {
+  //       return res;
+  //     }
+  //     return Promise.reject(null);
+  //   },
+  //   {
+  //     // onSuccess(data) {
+  //     //   queryClient.setQueryData(podcast.get_social_link(), data);
+  //     // },
+  //   }
+  // );
 };
 //1
 export const useSet_social_link = (cid: string) => {

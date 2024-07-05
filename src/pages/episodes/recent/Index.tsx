@@ -1,6 +1,5 @@
 import { get_podcast_list } from '@/api/podcast';
 import cidList from '@/common/cidConfig';
-import EpisodeCard from '@/components/episodeCard/Index';
 import bgRecent from '@/public/episodes/bgRecent.png';
 import { Stack } from '@mui/system';
 import { PodcastIterm } from '@nnsdao/nnsdao-kit/src/podcast/types';
@@ -60,11 +59,11 @@ export default function Recent() {
           }}>
           Available on your favorite platform
         </Stack>
-        <Stack direction={'row'} width="100%" height={'600px'} flexWrap="wrap" justifyContent="center">
+        {/* <Stack direction={'row'} width="100%" height={'600px'} flexWrap="wrap" justifyContent="center">
           {podcastData.map(item => (
             <EpisodeCard data={item} />
           ))}
-        </Stack>
+        </Stack> */}
       </Stack>
     </Stack>
   );

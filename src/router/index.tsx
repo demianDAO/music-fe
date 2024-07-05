@@ -1,11 +1,7 @@
 import About from '@/pages/about/Index';
 import Blog from '@/pages/blog/Index';
 import Episodes from '@/pages/episodes/Index';
-import Billing from '@/pages/manage/billing/Index';
-import Home from '@/pages/manage/home/Index';
 import { default as Manage } from '@/pages/manage/Index';
-import Invoices from '@/pages/manage/invoices/Index';
-import Site from '@/pages/manage/site/Index';
 import Token from '@/pages/manage/tokens/Index';
 import More from '@/pages/more/Index';
 import Account from '@/pages/padcast/account/Index';
@@ -58,11 +54,11 @@ const routes: RouteObject[] = [
     children: [
       { index: true, element: <Token /> },
       { path: 'Tokens', element: <Token /> },
-      { path: 'Home', element: <Home /> },
+      // { path: 'Home', element: <Home /> },
       // { path: 'Profile', element: <Profile /> },
-      { path: 'My Sites', element: <Site /> },
-      { path: 'Billing', element: <Billing /> },
-      { path: 'Invoices', element: <Invoices /> },
+      // { path: 'My Sites', element: <Site /> },
+      // { path: 'Billing', element: <Billing /> },
+      // { path: 'Invoices', element: <Invoices /> },
       // { path: 'Password', element: <Password /> },
     ],
   },

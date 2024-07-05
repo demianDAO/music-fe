@@ -1,5 +1,4 @@
 // import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import HomeIcon from '@mui/icons-material/Home';
 // import LanguageIcon from '@mui/icons-material/Language';
 import TokenIcon from '@mui/icons-material/Token';
 export const config = [
@@ -12,15 +11,15 @@ export const config = [
     bgColor: '#F3F6F9',
     nodeId: '1',
   },
-  {
-    labelType: 'text',
-    labelText: 'Home',
-    labelIcon: HomeIcon,
-    labelInfo: '',
-    color: '#3c8039',
-    bgColor: '#e6f4ea',
-    nodeId: '15',
-  },
+  // {
+  //   labelType: 'text',
+  //   labelText: 'Home',
+  //   labelIcon: HomeIcon,
+  //   labelInfo: '',
+  //   color: '#3c8039',
+  //   bgColor: '#e6f4ea',
+  //   nodeId: '15',
+  // },
 
   // {
   //   labelType: 'text',

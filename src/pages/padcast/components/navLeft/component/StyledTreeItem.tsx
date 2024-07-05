@@ -9,7 +9,7 @@ type StyledTreeItemProps = TreeItemProps & {
   labelIcon?: React.ElementType<SvgIconProps>;
   labelInfo?: string;
   labelText?: string;
-  nodeId: String;
+  itemId: String;
 };
 declare module 'react' {
   interface CSSProperties {

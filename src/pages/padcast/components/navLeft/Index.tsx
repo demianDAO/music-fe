@@ -1,6 +1,6 @@
-import { TreeView } from '@mui/x-tree-view';
 import '@mui/lab';
 import { Paper } from '@mui/material';
+import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import React, { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -29,16 +29,15 @@ export default function NavLeft() {
   };
   return (
     <Paper sx={{ position: 'fixed', background: '#f9f9f6', padding: '18px', height: '170vh', width: '240px' }}>
-      <TreeView
-        selected={selected}
-        onNodeSelect={(e, id) => setSelected(id)}
-        defaultCollapseIcon={false}
+      <SimpleTreeView
+        selectedItems={selected}
+        onSelectedItemsChange={(e, id) => setSelected(id!)}
         sx={{ flexGrow: 1, overflowY: 'auto', width: '200px', height: '100vh' }}>
         {config.map((item, index) => (
           <StyledTreeItem
             key={item.labelText}
             labelType={item.labelType}
-            nodeId={item.nodeId}
+            itemId={item.nodeId}
             labelText={item.labelText}
             labelIcon={item.labelIcon}
             labelInfo={item.labelInfo}
@@ -47,7 +46,7 @@ export default function NavLeft() {
             onClick={() => toChildren(item)}
           />
         ))}
-      </TreeView>
+      </SimpleTreeView>
     </Paper>
   );
 }
