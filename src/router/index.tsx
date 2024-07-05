@@ -53,7 +53,7 @@ const routes: RouteObject[] = [
     element: <Manage />,
     children: [
       { index: true, element: <Token /> },
-      { path: 'Tokens', element: <Token /> },
+      { path: 'Collections', element: <Token /> },
       // { path: 'Home', element: <Home /> },
       // { path: 'Profile', element: <Profile /> },
       // { path: 'My Sites', element: <Site /> },
